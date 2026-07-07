@@ -1,0 +1,15 @@
+Django
+psycopg2-binary
+dj-rest-auth
+django-allauth
+django-cors-headers
+djangorestframework
+djangorestframework-simplejwt
+pillow
+# channels
+# daphne
+requests
+django-allauth
+dj-rest-auth
+channels==4.0.0
+daphne==4.0.0
