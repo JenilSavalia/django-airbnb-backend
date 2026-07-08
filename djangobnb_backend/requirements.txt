@@ -13,3 +13,4 @@ django-allauth
 dj-rest-auth
 channels==4.0.0
 daphne==4.0.0
+dj-database-url

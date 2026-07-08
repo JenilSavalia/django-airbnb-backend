@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 from pathlib import Path
 import os
 from datetime import timedelta
+from django.core.exceptions import ImproperlyConfigured
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -156,16 +157,59 @@ ASGI_APPLICATION = 'djangobnb_backend.asgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': os.getenv('SQL_ENGINE'),
-        'NAME': os.getenv('SQL_DATABASE'),
-        'USER': os.getenv('SQL_USER'),
-        'PASSWORD': os.getenv('SQL_PASSWORD'),
-        'HOST': os.getenv('SQL_HOST'),
-        'PORT': os.getenv('SQL_PORT'),
+# DATABASES = {
+#     'default': {
+#         'ENGINE': os.getenv('SQL_ENGINE'),
+#         'NAME': os.getenv('SQL_DATABASE'),
+#         'USER': os.getenv('SQL_USER'),
+#         'PASSWORD': os.getenv('SQL_PASSWORD'),
+#         'HOST': os.getenv('SQL_HOST'),
+#         'PORT': os.getenv('SQL_PORT'),
+#     }
+# }
+
+
+# --- Database -------------------------------------------------------------
+# Uses a Postgres connection string (Neon). Accepts the common alternate names
+# that hosting integrations inject, so a Vercel/Neon integration works too.
+DATABASE_URL = ""
+for _var in ("DATABASE_URL", "POSTGRES_URL", "POSTGRES_PRISMA_URL", "NEON_DATABASE_URL"):
+    _val = os.getenv(_var, "").strip()
+    if _val:
+        DATABASE_URL = _val
+        break
+
+# Strip stray surrounding quotes/whitespace that can sneak in when the value is
+# pasted into a hosting provider's env UI (a leading quote makes the URL scheme
+# invalid and breaks dj_database_url.parse at import time).
+if DATABASE_URL and DATABASE_URL[0] == DATABASE_URL[-1] and DATABASE_URL[0] in "\"'":
+    DATABASE_URL = DATABASE_URL[1:-1].strip()
+
+if DATABASE_URL:
+    DATABASES = {
+        "default": dj_database_url.parse(
+            DATABASE_URL,
+            conn_max_age=600,
+            ssl_require=True,
+        )
     }
-}
+elif os.getenv("VERCEL"):
+    # On Vercel the filesystem is read-only, so the sqlite fallback can't work.
+    # Fail loudly with a clear message instead of an opaque "unable to open
+    # database file" at request time.
+    raise ImproperlyConfigured(
+        "DATABASE_URL is not set in this Vercel environment. Add the Neon "
+        "connection string under Project Settings -> Environment Variables for "
+        "ALL environments (Production, Preview, Development) and redeploy."
+    )
+else:
+    # Local convenience fallback so the project boots before Neon is configured.
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 
 
 # Password validation
