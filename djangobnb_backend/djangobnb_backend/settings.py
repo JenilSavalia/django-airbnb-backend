@@ -31,7 +31,7 @@ DEBUG = True
 
 SITE_ID = 1
 
-WEBSITE_URL = "http://localhost:8000"
+WEBSITE_URL = "https://django-airbnb-backend.vercel.app"
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
