@@ -63,7 +63,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://localhost:8000",
     "https://django-airbnb-backend.vercel.app"
-    "https://django-airbnb-frontend-1oe9xiaai-jenil-savalias-projects.vercel.app"
+    "https://django-airbnb-frontend-1oe9xiaai-jenil-savalias-projects.vercel.app/"
 ]
 
 REST_AUTH = {
