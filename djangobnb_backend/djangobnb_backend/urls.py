@@ -15,10 +15,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include,re_path
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import TemplateView
+from django.views.static import serve
 
 # --- TEMPORARY: error-page testing. Remove before deploying. ---
 from django.core.exceptions import PermissionDenied, SuspiciousOperation
@@ -35,11 +36,12 @@ urlpatterns = [
     path('api/properties/', include('property.urls')),
     path('api/auth/',include('useraccount.urls')),
     path('api/chat/',include('chat.urls')),
+    re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
-urlpatterns += [
-    path("test-400/", _test_400),
-    path("test-403/", _test_403),
-    path("test-500/", _test_500),
-]
+# urlpatterns += [
+#     path("test-400/", _test_400),
+#     path("test-403/", _test_403),
+#     path("test-500/", _test_500),
+# ]
