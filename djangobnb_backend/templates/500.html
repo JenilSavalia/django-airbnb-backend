@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>404 — Page not found</title>
+  <title>500 — Server error</title>
   <style>
     :root {
       --brand: #FF385C;
@@ -96,12 +96,12 @@
 </head>
 <body>
   <main class="card">
-    <p class="code">404</p>
-    <h1>Page not found</h1>
-    <p class="msg">The page you're looking for doesn't exist or may have been moved.</p>
+    <p class="code">500</p>
+    <h1>Something went wrong</h1>
+    <p class="msg">An unexpected error occurred on our end. We've been notified — please try again in a moment.</p>
     <div class="actions">
       <a class="btn btn-primary" href="/">Go home</a>
-      <a class="btn btn-secondary" href="#" onclick="history.back();return false;">Go back</a>
+      <a class="btn btn-secondary" href="#" onclick="location.reload();return false;">Try again</a>
     </div>
   </main>
 </body>

@@ -28,6 +28,3 @@ urlpatterns = [
     path('api/auth/',include('useraccount.urls')),
     path('api/chat/',include('chat.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-# Force Django to map 404 directly to your template file
-handler404 = lambda request, exception: TemplateView.as_view(template_name="404.html")(request)
