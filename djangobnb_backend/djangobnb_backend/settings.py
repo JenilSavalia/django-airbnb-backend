@@ -33,6 +33,13 @@ SITE_ID = 1
 
 WEBSITE_URL = "https://django-airbnb-backend.vercel.app"
 
+TEMPLATES = [
+    {
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [BASE_DIR / "templates"]  # new
+    }
+]
+
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
