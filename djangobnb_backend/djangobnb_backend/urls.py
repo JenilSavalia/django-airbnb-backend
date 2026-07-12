@@ -40,8 +40,8 @@ urlpatterns = [
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
-# urlpatterns += [
-#     path("test-400/", _test_400),
-#     path("test-403/", _test_403),
-#     path("test-500/", _test_500),
-# ]
+urlpatterns += [
+    path("test-400/", _test_400),
+    path("test-403/", _test_403),
+    path("test-500/", _test_500),
+]
