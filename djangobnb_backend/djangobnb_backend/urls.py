@@ -20,6 +20,14 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import TemplateView
 
+# --- TEMPORARY: error-page testing. Remove before deploying. ---
+from django.core.exceptions import PermissionDenied, SuspiciousOperation
+from django.http import HttpResponse
+
+def _test_400(request): raise SuspiciousOperation("test")
+def _test_403(request): raise PermissionDenied("test")
+def _test_500(request): raise Exception("test")
+
 
 
 urlpatterns = [
@@ -28,3 +36,10 @@ urlpatterns = [
     path('api/auth/',include('useraccount.urls')),
     path('api/chat/',include('chat.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+urlpatterns += [
+    path("test-400/", _test_400),
+    path("test-403/", _test_403),
+    path("test-500/", _test_500),
+]
